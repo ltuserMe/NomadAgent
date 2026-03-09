@@ -1,4 +1,4 @@
-﻿import { Card, Collapse, Descriptions, Image, Space, Tag, Typography } from 'antd';
+import { Card, Collapse, Descriptions, Image, Space, Tag, Typography } from 'antd';
 import type { TripDay } from '@travel/shared';
 import { usePlannerStore } from '../../store/planner.store';
 
@@ -12,7 +12,7 @@ export function DayPlanSection({ days }: Props) {
   const { selectedDay, setSelectedDay, setHighlightedSpotId } = usePlannerStore();
 
   return (
-    <Card className="travel-card section-card day-plan-card" id="days" title="每日行程">
+    <Card className="travel-card air-card section-card day-plan-card" id="days" title="每日行程">
       <Collapse
         accordion
         activeKey={String(selectedDay)}
@@ -29,38 +29,41 @@ export function DayPlanSection({ days }: Props) {
                 <Descriptions.Item label="住宿信息">{day.hotel.name}</Descriptions.Item>
               </Descriptions>
 
-              <Card size="small" title="景点安排">
-                <Space direction="vertical" size={12} style={{ width: '100%' }}>
+              <Card className="day-aux-card day-spot-wrap" size="small" title="景点安排">
+                <div className="day-plan-timeline">
                   {day.spots.map((spot) => (
-                    <Card
-                      key={spot.id}
-                      className="day-spot-card"
-                      size="small"
-                      onMouseEnter={() => setHighlightedSpotId(spot.id)}
-                    >
-                      <Space align="start" style={{ width: '100%' }}>
-                        <Image
-                          width={120}
-                          height={90}
-                          src={spot.image}
-                          style={{ objectFit: 'cover', borderRadius: 8 }}
-                        />
-                        <Space direction="vertical" size={2} style={{ flex: 1 }}>
-                          <Space>
-                            <Tag color="blue">#{spot.orderNo}</Tag>
-                            <Text strong>{spot.name}</Text>
-                            {typeof spot.ticketPrice === 'number' ? (
-                              <Tag color="purple">{spot.ticketPrice} 元</Tag>
-                            ) : null}
-                          </Space>
-                          <Text type="secondary">{spot.address}</Text>
-                          <Text type="secondary">游览时长：{spot.duration}</Text>
-                          <Paragraph style={{ marginBottom: 0 }}>{spot.description}</Paragraph>
-                        </Space>
-                      </Space>
-                    </Card>
+                    <div key={spot.id} className="day-spot-node" onMouseEnter={() => setHighlightedSpotId(spot.id)}>
+                      <Card className="day-spot-card air-card" size="small">
+                        <div className="day-spot-layout">
+                          <div className="day-spot-image-wrap">
+                            <Image
+                              width={124}
+                              height={92}
+                              src={spot.image}
+                              preview={false}
+                              style={{ objectFit: 'cover' }}
+                            />
+                            <div className="day-spot-image-mask" />
+                            <Tag className="day-spot-order" color="blue">
+                              #{spot.orderNo}
+                            </Tag>
+                          </div>
+                          <div className="day-spot-content">
+                            <Space size={8} wrap>
+                              <Text strong>{spot.name}</Text>
+                              {typeof spot.ticketPrice === 'number' ? (
+                                <Tag color="purple">{spot.ticketPrice} 元</Tag>
+                              ) : null}
+                            </Space>
+                            <Text type="secondary">{spot.address}</Text>
+                            <Text type="secondary">游览时长：{spot.duration}</Text>
+                            <Paragraph className="day-spot-desc">{spot.description}</Paragraph>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
                   ))}
-                </Space>
+                </div>
               </Card>
 
               <Card className="day-aux-card" size="small" title="住宿推荐">

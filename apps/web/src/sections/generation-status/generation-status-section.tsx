@@ -1,4 +1,4 @@
-﻿import { Card, Progress, Space, Tag, Typography } from 'antd';
+import { Card, Progress, Space, Tag, Typography } from 'antd';
 import { usePlannerStore } from '../../store/planner.store';
 
 const { Text } = Typography;
@@ -7,7 +7,7 @@ export function GenerationStatusSection() {
   const { progress } = usePlannerStore();
 
   return (
-    <Card className="planner-shell-card" bodyStyle={{ padding: 20 }}>
+    <Card className="planner-shell-card magic-card generation-status-layer" bodyStyle={{ padding: 20 }}>
       <div className="generating-banner">正在进行行程推理和资源匹配...</div>
       <Card className="generating-progress-card" bodyStyle={{ padding: 16 }}>
         <Progress percent={progress} strokeColor={{ '0%': '#4e6ff0', '100%': '#5a88f3' }} />

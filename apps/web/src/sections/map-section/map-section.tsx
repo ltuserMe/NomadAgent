@@ -1,4 +1,4 @@
-﻿import { Card, Typography } from 'antd';
+import { Card, Typography } from 'antd';
 import type { SpotInfo } from '@travel/shared';
 import { usePlannerStore } from '../../store/planner.store';
 
@@ -12,7 +12,7 @@ export function MapSection({ spots }: Props) {
   const { highlightedSpotId, setHighlightedSpotId } = usePlannerStore();
 
   return (
-    <Card className="travel-card section-card" id="map" title="景点地图">
+    <Card className="travel-card magic-card section-card planner-map-card planner-map-island" id="map" title="景点地图">
       <div className="planner-fake-map">
         {spots.map((spot, index) => {
           const left = 14 + ((index * 22) % 73);
