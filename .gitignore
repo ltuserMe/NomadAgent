@@ -1,0 +1,9 @@
+node_modules
+.pnpm-store
+.turbo
+dist
+build
+coverage
+.env
+*.log
+apps/api/generated

@@ -1,0 +1,11 @@
+{
+  "extends": "@travel/config/tsconfig.base",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "baseUrl": "./src",
+    "declaration": false,
+    "sourceMap": false
+  },
+  "include": ["src", "vite.config.ts"]
+}

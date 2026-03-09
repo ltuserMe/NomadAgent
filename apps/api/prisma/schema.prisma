@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TripStatus {
+  draft
+  ready
+  updated
+}
+
+enum ExportType {
+  pdf
+  markdown
+  json
+}
+
+enum ExportStatus {
+  pending
+  processing
+  done
+  failed
+}
+
+model TripPlan {
+  id             String            @id @default(cuid()) @map("id")
+  title          String            @map("title")
+  city           String            @map("city")
+  startDate      DateTime          @map("start_date")
+  endDate        DateTime          @map("end_date")
+  suggestion     String            @map("suggestion")
+  weatherSummary String            @map("weather_summary")
+  totalBudget    Decimal           @map("total_budget") @db.Decimal(10, 2)
+  status         TripStatus        @default(draft) @map("status")
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @updatedAt @map("updated_at")
+
+  days           TripDayPlan[]
+  budget         BudgetBreakdown?
+  exports        ExportTask[]
+
+  @@map("trip_plans")
+}
+
+model TripDayPlan {
+  id          String    @id @default(cuid()) @map("id")
+  tripPlanId  String    @map("trip_plan_id")
+  dayNo       Int       @map("day_no")
+  date        DateTime  @map("date")
+  summary     String    @map("summary")
+  transport   String    @map("transport")
+  hotelName   String    @map("hotel_name")
+  mealsJson   Json      @map("meals_json")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  tripPlan    TripPlan   @relation(fields: [tripPlanId], references: [id], onDelete: Cascade)
+  spots       TripSpot[]
+
+  @@unique([tripPlanId, dayNo])
+  @@map("trip_day_plans")
+}
+
+model TripSpot {
+  id            String     @id @default(cuid()) @map("id")
+  tripDayPlanId String     @map("trip_day_plan_id")
+  orderNo       Int        @map("order_no")
+  name          String     @map("name")
+  image         String?    @map("image")
+  address       String     @map("address")
+  duration      String     @map("duration")
+  description   String     @map("description")
+  ticketPrice   Decimal?   @map("ticket_price") @db.Decimal(10, 2)
+  latitude      Decimal    @map("latitude") @db.Decimal(10, 6)
+  longitude     Decimal    @map("longitude") @db.Decimal(10, 6)
+
+  tripDayPlan   TripDayPlan @relation(fields: [tripDayPlanId], references: [id], onDelete: Cascade)
+
+  @@map("trip_spots")
+}
+
+model BudgetBreakdown {
+  id            String    @id @default(cuid()) @map("id")
+  tripPlanId    String    @unique @map("trip_plan_id")
+  ticketCost    Decimal   @map("ticket_cost") @db.Decimal(10, 2)
+  hotelCost     Decimal   @map("hotel_cost") @db.Decimal(10, 2)
+  foodCost      Decimal   @map("food_cost") @db.Decimal(10, 2)
+  transportCost Decimal   @map("transport_cost") @db.Decimal(10, 2)
+  totalCost     Decimal   @map("total_cost") @db.Decimal(10, 2)
+
+  tripPlan      TripPlan  @relation(fields: [tripPlanId], references: [id], onDelete: Cascade)
+
+  @@map("budget_breakdowns")
+}
+
+model ExportTask {
+  id         String       @id @default(cuid()) @map("id")
+  tripPlanId String       @map("trip_plan_id")
+  type       ExportType   @map("type")
+  status     ExportStatus @default(pending) @map("status")
+  fileUrl    String?      @map("file_url")
+  createdAt  DateTime     @default(now()) @map("created_at")
+
+  tripPlan   TripPlan     @relation(fields: [tripPlanId], references: [id], onDelete: Cascade)
+
+  @@map("export_tasks")
+}
