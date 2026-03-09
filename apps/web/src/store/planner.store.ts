@@ -10,12 +10,14 @@ type PlannerStore = {
   progress: number;
   selectedDay: number;
   highlightedSpotId?: string;
+  mobileMapVisible: boolean;
   formValue: PlannerFormValue;
   result?: GeneratePlanResponse;
   setViewState: (state: PlannerViewState) => void;
   setProgress: (value: number) => void;
   setSelectedDay: (day: number) => void;
   setHighlightedSpotId: (spotId?: string) => void;
+  setMobileMapVisible: (visible: boolean) => void;
   setFormValue: (value: PlannerFormValue) => void;
   setResult: (result?: GeneratePlanResponse) => void;
 };
@@ -35,12 +37,14 @@ export const usePlannerStore = create<PlannerStore>((set) => ({
   progress: 0,
   selectedDay: 1,
   highlightedSpotId: undefined,
+  mobileMapVisible: false,
   formValue: defaultFormValue,
   result: undefined,
   setViewState: (viewState) => set({ viewState }),
   setProgress: (progress) => set({ progress }),
   setSelectedDay: (selectedDay) => set({ selectedDay }),
   setHighlightedSpotId: (highlightedSpotId) => set({ highlightedSpotId }),
+  setMobileMapVisible: (mobileMapVisible) => set({ mobileMapVisible }),
   setFormValue: (formValue) => set({ formValue }),
   setResult: (result) => set({ result }),
 }));

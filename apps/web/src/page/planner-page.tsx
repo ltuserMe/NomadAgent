@@ -2,23 +2,53 @@ import { PlannerFormSection } from '../sections/planner-form/planner-form-sectio
 import { GenerationStatusSection } from '../sections/generation-status/generation-status-section';
 import { TripResultSection } from '../sections/trip-result/trip-result-section';
 import { MapSection } from '../sections/map-section/map-section';
+import { HeroSection } from '../sections/hero/hero-section';
+import { Button, Drawer, Grid } from 'antd';
+import { EnvironmentOutlined } from '@ant-design/icons';
+import { useEffect } from 'react';
 import { usePlannerStore } from '../store/planner.store';
 
 export function PlannerPage() {
-  const { viewState, result } = usePlannerStore();
+  const screens = Grid.useBreakpoint();
+  const isMobile = !screens.lg;
+  const { viewState, result, mobileMapVisible, setMobileMapVisible } = usePlannerStore();
+
+  useEffect(() => {
+    if (!isMobile && mobileMapVisible) {
+      setMobileMapVisible(false);
+    }
+  }, [isMobile, mobileMapVisible, setMobileMapVisible]);
 
   if (viewState === 'form') {
     return (
-      <main className="planner-page-modern min-h-screen bg-slate-50">
-        <PlannerFormSection />
+      <main className="planner-page-modern planner-page-intake min-h-screen bg-slate-50">
+        <div className="planner-intake-shell">
+          {/* <aside className="planner-intake-overview">
+           
+           
+           
+          </aside> */}
+            <HeroSection />
+             {/* <section className="magic-card planner-intake-guide">
+              <h3 className="planner-intake-guide-title">3 步生成可执行行程</h3>
+              <ol className="planner-intake-guide-list">
+                <li>选择目的地和出行日期</li>
+                <li>设置预算、偏好与补充要求</li>
+                <li>一键生成逐日路线、预算与地图</li>
+              </ol>
+            </section> */}
+          <section className="planner-intake-form">
+            <PlannerFormSection />
+          </section>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="planner-page-modern min-h-screen bg-slate-50 pt-8 pb-24">
-      <div className="max-w-[1400px] mx-auto px-6 flex gap-8 items-start planner-result-shell">
-        <div className="flex-1 space-y-8 planner-result-left">
+    <main className="planner-page-modern planner-page-result min-h-screen bg-slate-50">
+      <div className="planner-result-shell">
+        <div className="planner-result-main-column">
           {viewState === 'result' && result ? (
             <TripResultSection result={result} />
           ) : (
@@ -29,13 +59,40 @@ export function PlannerPage() {
           )}
         </div>
 
-        <aside className="w-[400px] xl:w-[480px] shrink-0 planner-result-right">
-          <div className="sticky top-8 space-y-6">
+        {!isMobile ? (
+          <aside className="planner-result-side-column planner-result-right">
+            <div className="planner-result-side-sticky">
+              <MapSection spots={result?.plan.mapSpots ?? []} />
+              {viewState === 'generating' ? <GenerationStatusSection /> : null}
+            </div>
+          </aside>
+        ) : null}
+      </div>
+
+      {isMobile ? (
+        <>
+          <Button
+            type="primary"
+            icon={<EnvironmentOutlined />}
+            className="planner-mobile-map-trigger"
+            onClick={() => setMobileMapVisible(true)}
+          >
+            查看地图
+          </Button>
+          <Drawer
+            placement="bottom"
+            height="78vh"
+            closable
+            title="景点地图"
+            open={mobileMapVisible}
+            onClose={() => setMobileMapVisible(false)}
+            className="planner-mobile-map-drawer"
+          >
             <MapSection spots={result?.plan.mapSpots ?? []} />
             {viewState === 'generating' ? <GenerationStatusSection /> : null}
-          </div>
-        </aside>
-      </div>
+          </Drawer>
+        </>
+      ) : null}
     </main>
   );
 }

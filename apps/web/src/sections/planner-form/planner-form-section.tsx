@@ -1,4 +1,4 @@
-import type { GeneratePlanRequest } from '@travel/shared';
+﻿import type { GeneratePlanRequest } from '@travel/shared';
 import dayjs, { type Dayjs } from 'dayjs';
 import { Button, Card, DatePicker, Form, Input, Select } from 'antd';
 import { useMemo, useState } from 'react';

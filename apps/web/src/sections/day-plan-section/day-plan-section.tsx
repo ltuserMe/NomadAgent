@@ -9,7 +9,12 @@ type Props = {
 };
 
 export function DayPlanSection({ days }: Props) {
-  const { selectedDay, setSelectedDay, setHighlightedSpotId } = usePlannerStore();
+  const { selectedDay, setSelectedDay, setHighlightedSpotId, setMobileMapVisible } = usePlannerStore();
+
+  const focusSpotOnMap = (spotId: string) => {
+    setHighlightedSpotId(spotId);
+    setMobileMapVisible(true);
+  };
 
   return (
     <Card className="travel-card air-card section-card day-plan-card" id="days" title="每日行程">
@@ -32,7 +37,12 @@ export function DayPlanSection({ days }: Props) {
               <Card className="day-aux-card day-spot-wrap" size="small" title="景点安排">
                 <div className="day-plan-timeline">
                   {day.spots.map((spot) => (
-                    <div key={spot.id} className="day-spot-node" onMouseEnter={() => setHighlightedSpotId(spot.id)}>
+                    <div
+                      key={spot.id}
+                      className="day-spot-node"
+                      onMouseEnter={() => setHighlightedSpotId(spot.id)}
+                      onClick={() => focusSpotOnMap(spot.id)}
+                    >
                       <Card className="day-spot-card air-card" size="small">
                         <div className="day-spot-layout">
                           <div className="day-spot-image-wrap">
@@ -55,7 +65,16 @@ export function DayPlanSection({ days }: Props) {
                                 <Tag color="purple">{spot.ticketPrice} 元</Tag>
                               ) : null}
                             </Space>
-                            <Text type="secondary">{spot.address}</Text>
+                            <button
+                              type="button"
+                              className="day-spot-address-btn"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                focusSpotOnMap(spot.id);
+                              }}
+                            >
+                              {spot.address}
+                            </button>
                             <Text type="secondary">游览时长：{spot.duration}</Text>
                             <Paragraph className="day-spot-desc">{spot.description}</Paragraph>
                           </div>
