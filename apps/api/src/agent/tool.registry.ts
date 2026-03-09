@@ -1,4 +1,4 @@
-export type ToolDefinition = {
+﻿export type ToolDefinition = {
   name: 'searchAttractions' | 'getWeather' | 'estimateBudget' | 'searchHotels' | 'getRouteDistance';
   description: string;
   run: (...args: unknown[]) => Promise<unknown>;
@@ -7,27 +7,27 @@ export type ToolDefinition = {
 export const toolRegistry: ToolDefinition[] = [
   {
     name: 'searchAttractions',
-    description: '閺嶈宓侀惄顔炬畱閸︽澘鎷伴崑蹇撱偨閹兼粎鍌ㄩ弲顖滃仯閸婃瑩鈧?,
+    description: '根据目的地和偏好检索景点列表及推荐信息。',
     run: async () => ({ items: [] }),
   },
   {
     name: 'getWeather',
-    description: '閼惧嘲褰囬惄顔炬畱閸︽澘銇夊鏂句繆閹?,
-    run: async () => ({ summary: '閺呯娴嗘径姘隘' }),
+    description: '查询目的地天气概览与出行建议。',
+    run: async () => ({ summary: '晴到多云' }),
   },
   {
     name: 'estimateBudget',
-    description: '娴兼壆鐣婚幀濠氼暕缁?,
+    description: '根据天数、城市和偏好估算预算。',
     run: async () => ({ total: 0 }),
   },
   {
     name: 'searchHotels',
-    description: '閹兼粎鍌ㄩ柊鎺戠暗閸婃瑩鈧?,
+    description: '按价格和地理位置筛选酒店候选。',
     run: async () => ({ items: [] }),
   },
   {
     name: 'getRouteDistance',
-    description: '娴兼壆鐣荤捄顖滃殠鐠烘繄顬?,
+    description: '计算景点之间的路线距离和耗时。',
     run: async () => ({ distance: '0km' }),
   },
 ];

@@ -1,4 +1,4 @@
-import type { FastifyInstance } from 'fastify';
+﻿import type { FastifyInstance } from 'fastify';
 import { ZodError } from 'zod';
 import { AppError } from '../errors/app-error.js';
 
@@ -7,7 +7,7 @@ export function registerErrorHandler(app: FastifyInstance): void {
     if (error instanceof ZodError) {
       reply.status(400).send({
         success: false,
-        message: '鐠囬攱鐪伴崣鍌涙殶閺嶏繝鐛欐径杈Е',
+        message: '请求参数校验失败',
         errorCode: 'VALIDATION_ERROR',
         issues: error.issues,
       });
@@ -25,7 +25,7 @@ export function registerErrorHandler(app: FastifyInstance): void {
 
     reply.status(500).send({
       success: false,
-      message: error instanceof Error ? error.message : '閺堝秴濮熼崳銊ュ敶闁劑鏁婄拠?,
+      message: error instanceof Error ? error.message : '服务器内部错误',
       errorCode: 'INTERNAL_ERROR',
     });
   });
