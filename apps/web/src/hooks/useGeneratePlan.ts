@@ -38,10 +38,10 @@ export function useGeneratePlan() {
       };
 
       const data =
-      await Promise.resolve(createMockPlan(payload))
-        // import.meta.env.VITE_USE_MOCK === 'true'
-        //   ? await Promise.resolve(createMockPlan(payload))
-        //   : await plannerApi.generatePlan(payload);
+      // await Promise.resolve(createMockPlan(payload))
+        import.meta.env.VITE_USE_MOCK === 'true'
+          ? await Promise.resolve(createMockPlan(payload))
+          : await plannerApi.generatePlan(payload);
 
       clear();
       setProgress(100);
