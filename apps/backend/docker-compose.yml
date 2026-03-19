@@ -40,8 +40,8 @@ services:
 
     server:
         build:
-            context: .
-            dockerfile: Dockerfile
+            context: ../..
+            dockerfile: apps/backend/Dockerfile
             cache_from:
                 - nestjs-app:latest
         container_name: nestjs-app
@@ -56,7 +56,7 @@ services:
         networks:
             - app-network
         volumes:
-            - .:/app
+            - ../..:/app
             - /app/node_modules
         depends_on:
             postgres:
