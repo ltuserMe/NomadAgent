@@ -25,6 +25,8 @@ model User {
   deletedAt  DateTime? @map("deleted_at")
   avatar     String?
   posts      Post[]
+  messages   ChatMessage[]
+
 
   @@map("users")
 }
@@ -75,9 +77,9 @@ model ChatMessage {
   role      String   // 'user' or 'assistant'
   content   String   @db.Text
   createdAt DateTime @default(now()) @map("created_at")
-  authorId String? @map("author_id")
+  userId String? @map("user_id")
   updatedAt DateTime @updatedAt @map("updated_at")
-  author   User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("chat_messages")
 }

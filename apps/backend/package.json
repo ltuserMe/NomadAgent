@@ -7,7 +7,7 @@
     "private": true,
     "engines": {
         "node": ">=20.0.0",
-        "yarn": ">=1.22.0"
+        "pnpm": ">=10.0.0"
     },
     "scripts": {
         "prepare": "husky || exit 0",

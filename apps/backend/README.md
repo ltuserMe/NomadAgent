@@ -156,7 +156,7 @@ git clone https://github.com/hmake98/nestjs-starter.git
 cd nestjs-starter
 
 # Install dependencies
-yarn install
+pnpm install
 ```
 
 ### 2. Environment Setup
@@ -173,20 +173,20 @@ nano .env  # or use your preferred editor
 
 ```bash
 # Generate Prisma client
-yarn generate
+pnpm prisma:generate
 
 # Run database migrations
-yarn migrate
+pnpm prisma:migrate
 
 # (Optional) Seed email templates
-yarn seed:email
+pnpm seed:email
 ```
 
 ### 4. Start Development Server
 
 ```bash
 # Development mode with hot reload
-yarn dev
+pnpm dev
 
 # Or using Docker Compose (recommended for full stack)
 docker-compose up --build
@@ -563,13 +563,13 @@ The project uses Jest with SWC for fast test execution. Tests are located in the
 
 ```bash
 # Run all tests
-yarn test
+pnpm test
 
 # Run tests in watch mode (requires manual setup)
 jest --config test/jest.json --watch
 
 # Debug tests
-yarn test:debug
+pnpm test:debug
 ```
 
 **Test Coverage** (18 test suites with 90%+ coverage threshold):
@@ -647,39 +647,39 @@ src/
 
 ```bash
 # Lint code
-yarn lint
+pnpm lint
 
 # Format code
-yarn format
+pnpm format
 
 # Type checking
-yarn build
+pnpm build
 ```
 
 ### Database Operations
 
 ```bash
 # Generate Prisma client after schema changes
-yarn generate
+pnpm prisma:generate
 
 # Create new migration
-yarn migrate
+pnpm prisma:migrate
 
 # Deploy migrations to production
-yarn migrate:prod
+pnpm prisma:migrate-prod
 
 # Open Prisma Studio
-yarn studio
+pnpm prisma:studio
 ```
 
 ### Background Jobs
 
 ```bash
 # Seed email templates
-yarn seed:email
+pnpm seed:email
 
 # Remove email templates
-yarn rollback:email
+pnpm rollback:email
 ```
 
 ## 🚀 Deployment
@@ -835,11 +835,11 @@ kubectl get pods -n nestjs-starter | grep redis
 # Reset database (⚠️ DESTRUCTIVE - development only)
 docker-compose down -v
 docker-compose up -d postgres redis
-yarn generate
-yarn migrate
+pnpm prisma:generate
+pnpm prisma:migrate
 
 # For production, run migrations explicitly
-yarn migrate:prod
+pnpm prisma:migrate-prod
 
 # If stuck, check migration status
 npx prisma migrate status
@@ -857,12 +857,12 @@ lsof -i :3001
 kill -9 <PID>
 
 # Or use a different port
-HTTP_PORT=3002 yarn dev
+HTTP_PORT=3002 pnpm dev
 ```
 
 #### Docker Build Fails
 
-**Problem**: `ERROR [builder X/Y] RUN yarn install --frozen-lockfile`
+**Problem**: `ERROR [builder X/Y] RUN pnpm install --frozen-lockfile`
 
 ```bash
 # Clear Docker build cache
@@ -922,13 +922,13 @@ aws s3 ls s3://your-bucket-name --region us-east-1
 
 ```bash
 # Clear test cache
-yarn test --clearCache
+pnpm test --clearCache
 
 # Run tests with verbose output
-yarn test --verbose
+pnpm test --verbose
 
 # Run specific test file
-yarn test --testPathPattern=user.service.spec.ts
+pnpm test --testPathPattern=user.service.spec.ts
 
 # Check for missing mocks
 # Ensure all external dependencies are properly mocked
@@ -940,12 +940,12 @@ yarn test --testPathPattern=user.service.spec.ts
 
 ```bash
 # Clear build cache and reinstall
-rm -rf dist node_modules yarn.lock
-yarn install
-yarn build
+rm -rf dist node_modules pnpm-lock.yaml
+pnpm install
+pnpm build
 
 # Regenerate Prisma client
-yarn generate
+pnpm prisma:generate
 
 # Check tsconfig.json paths configuration
 ```
@@ -959,10 +959,10 @@ yarn generate
 docker stats
 
 # Increase Node.js memory limit
-NODE_OPTIONS="--max-old-space-size=4096" yarn start
+NODE_OPTIONS="--max-old-space-size=4096" pnpm start
 
 # Enable garbage collection logs
-NODE_OPTIONS="--trace-gc" yarn dev
+NODE_OPTIONS="--trace-gc" pnpm dev
 
 # Check for memory leaks in production
 # Use clinic.js or node --inspect
@@ -1061,15 +1061,15 @@ If you encounter issues not covered here:
 
 | Script          | Description                              |
 | --------------- | ---------------------------------------- |
-| `yarn dev`      | Start development server with hot reload |
-| `yarn build`    | Build for production                     |
-| `yarn start`    | Start production server                  |
-| `yarn test`     | Run unit tests                           |
-| `yarn lint`     | Lint and fix code                        |
-| `yarn format`   | Format code with Prettier                |
-| `yarn generate` | Generate Prisma client                   |
-| `yarn migrate`  | Run database migrations                  |
-| `yarn studio`   | Open Prisma Studio                       |
+| `pnpm dev`      | Start development server with hot reload |
+| `pnpm build`    | Build for production                     |
+| `pnpm start`    | Start production server                  |
+| `pnpm test`     | Run unit tests                           |
+| `pnpm lint`     | Lint and fix code                        |
+| `pnpm format`   | Format code with Prettier                |
+| `pnpm prisma:generate` | Generate Prisma client                   |
+| `pnpm prisma:migrate`  | Run database migrations                  |
+| `pnpm prisma:studio`   | Open Prisma Studio                       |
 
 ## 🔗 Useful Links
 

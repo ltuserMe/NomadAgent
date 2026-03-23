@@ -1,7 +1,7 @@
 services:
     postgres:
         image: postgres:16-alpine
-        container_name: nestjs-postgres
+        container_name: backend-postgres
         restart: unless-stopped
         ports:
             - '5432:5432'
@@ -22,7 +22,7 @@ services:
 
     redis:
         image: redis:7-alpine
-        container_name: nestjs-redis
+        container_name: backend-redis
         restart: unless-stopped
         ports:
             - '6379:6379'
@@ -43,8 +43,8 @@ services:
             context: ../..
             dockerfile: apps/backend/Dockerfile
             cache_from:
-                - nestjs-app:latest
-        container_name: nestjs-app
+                - backend-server:latest
+        container_name: backend-app
         restart: unless-stopped
         ports:
             - '3001:3001'
@@ -58,6 +58,7 @@ services:
         volumes:
             - ../..:/app
             - /app/node_modules
+            - /app/apps/backend/node_modules
         depends_on:
             postgres:
                 condition: service_healthy
@@ -67,12 +68,12 @@ services:
 networks:
     app-network:
         driver: bridge
-        name: nestjs-network
+        name: backend-network
 
 volumes:
     postgres_data:
         driver: local
-        name: nestjs-postgres-data
+        name: backend-postgres-data
     redis_data:
         driver: local
-        name: nestjs-redis-data
+        name: backend-redis-data
