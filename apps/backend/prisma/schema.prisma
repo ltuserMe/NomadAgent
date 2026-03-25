@@ -80,6 +80,5 @@ model ChatMessage {
   userId String? @map("user_id")
   updatedAt DateTime @updatedAt @map("updated_at")
   user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   @@map("chat_messages")
 }

@@ -1,6 +1,13 @@
-import { ChatAskResponseDto, ChatHistoryResponseDto } from '../dtos/response/chat.response';
+import {
+    ChatAskResponseDto,
+    ChatHistoryResponseDto,
+} from '../dtos/response/chat.response';
 
 export interface IChatService {
-    saveMessage(role: 'user' | 'assistant', content: string): Promise<any>;
-    getChatHistory(limit?: number): Promise<ChatHistoryResponseDto[]>;
+    saveMessage(
+        userId: string,
+        role: 'user' | 'assistant',
+        content: string
+    ): Promise<any>;
+    getChatHistory(userId,limit?: number): Promise<ChatHistoryResponseDto[]>;
 }

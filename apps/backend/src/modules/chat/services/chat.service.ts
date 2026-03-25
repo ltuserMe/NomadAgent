@@ -11,11 +11,12 @@ export class ChatService implements IChatService {
     /**
      * 保存对话消息到数据库
      */
-    async saveMessage(role: 'user' | 'assistant', content: string) {
+    async saveMessage(userId:string, role: 'user' | 'assistant', content: string) {
         return this.databaseService.chatMessage.create({
             data: {
                 role,
                 content,
+                userId
             },
         });
     }
@@ -23,10 +24,11 @@ export class ChatService implements IChatService {
     /**
      * 获取最近的聊天历史（用于给 AI 提供上下文）
      */
-    async getChatHistory(limit = 10): Promise<ChatHistoryResponseDto[]> {
+    async getChatHistory(userId:string, limit = 10): Promise<ChatHistoryResponseDto[]> {
         return this.databaseService.chatMessage.findMany({
+            where: { userId },
             orderBy: { createdAt: 'desc' },
-            take: limit,
+            
         });
     }
 }
